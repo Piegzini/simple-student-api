@@ -5,7 +5,7 @@ const schema = {
     type: 'object',
     properties: {
         id: {
-            type: 'integer',
+            type: 'number',
         },
         title: {
             type: 'string',
@@ -17,5 +17,4 @@ const schema = {
 
 const booksValidator = ajv.compile(schema)
 
-console.log(`SELECT  FROM books WHERE id = ? `)
 module.exports = booksValidator

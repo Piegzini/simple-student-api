@@ -5,13 +5,13 @@ const schema = {
     type: 'object',
     properties: {
         id: {
-            type: 'integer',
+            type: 'number',
         },
         book_id: {
-            type: 'integer',
+            type: 'number',
         },
         student_id: {
-            type: 'integer',
+            type: 'number',
         },
     },
     required: ['book_id', 'student_id'],

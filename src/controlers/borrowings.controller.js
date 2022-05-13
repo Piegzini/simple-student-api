@@ -1,0 +1,11 @@
+const Controller = require('../utlis/Controller')
+const Validator = require('../schemas/borrowing.schema')
+
+class Borrowings extends Controller {
+    constructor(_collection, _validator) {
+        super(_collection, _validator)
+    }
+}
+
+const borrowingsController = new Borrowings('borrowings', Validator)
+module.exports = borrowingsController
