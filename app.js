@@ -4,6 +4,7 @@ const books = require('./src/routes/books.routes')
 const borrowings = require('./src/routes/borrowings.routes')
 const students = require('./src/routes/students.routes')
 const apiLogger = require('./src/middleware/apiLogger')
+const helmet = require('helmet')
 
 const bodyParser = require('body-parser')
 const logger = require('./src/middleware/logger')
@@ -13,6 +14,7 @@ express.urlencoded({ extended: true })
 
 const app = express()
 
+app.use(helmet())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
