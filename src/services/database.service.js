@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 const config = require('../../db.config');
-const Response = require('../utlis/response');
+const Response = require('../helpers/response');
 
 class DatabaseService {
     baseClient = mysql;

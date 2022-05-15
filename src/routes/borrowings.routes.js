@@ -5,7 +5,12 @@ const borrowingsController = require('../controlers/borrowings.controller');
 router
     .get('/:id?', async (req, res) => {
         const { id } = req.params;
-        const responseInformation = await borrowingsController.get(id);
+        const queryParams = { ...req.query };
+
+        const responseInformation = await borrowingsController.get(
+            id,
+            queryParams
+        );
         res.status(responseInformation.statusCode).send(responseInformation);
     })
     .post('/', async (req, res) => {

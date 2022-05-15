@@ -5,7 +5,11 @@ const studentsController = require('../controlers/students.controller');
 router
     .get('/:id?', async (req, res) => {
         const { id } = req.params;
-        const responseInformation = await studentsController.get(id);
+        const queryParams = { ...req.query };
+        const responseInformation = await studentsController.get(
+            id,
+            queryParams
+        );
         res.status(responseInformation.statusCode).send(responseInformation);
     })
     .post('/', async (req, res) => {

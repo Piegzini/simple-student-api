@@ -1,4 +1,4 @@
-const Controller = require('../utlis/Controller');
+const Controller = require('../helpers/Controller');
 const Validator = require('../schemas/book.schema');
 
 class Books extends Controller {
