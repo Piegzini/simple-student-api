@@ -1,5 +1,5 @@
-const Ajv = require('ajv')
-const ajv = new Ajv()
+const Ajv = require('ajv');
+const ajv = new Ajv();
 
 const schema = {
     type: 'object',
@@ -16,8 +16,8 @@ const schema = {
     },
     required: ['book_id', 'student_id'],
     additionalProperties: false,
-}
+};
 
-const borrowingValidator = ajv.compile(schema)
+const borrowingValidator = ajv.compile(schema);
 
-module.exports = borrowingValidator
+module.exports = borrowingValidator;

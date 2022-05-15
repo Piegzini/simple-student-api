@@ -3,6 +3,6 @@ const dbConfig = {
     user: 'root',
     password: 'zaq1',
     database: 'library',
-}
+};
 
-module.exports = dbConfig
+module.exports = dbConfig;

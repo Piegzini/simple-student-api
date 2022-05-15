@@ -1,5 +1,5 @@
-const Ajv = require('ajv')
-const ajv = new Ajv()
+const Ajv = require('ajv');
+const ajv = new Ajv();
 
 const schema = {
     type: 'object',
@@ -21,8 +21,8 @@ const schema = {
     },
     required: ['pesel', 'name', 'surname'],
     additionalProperties: false,
-}
+};
 
-const studentValidator = ajv.compile(schema)
+const studentValidator = ajv.compile(schema);
 
-module.exports = studentValidator
+module.exports = studentValidator;

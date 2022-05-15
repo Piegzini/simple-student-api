@@ -1,9 +1,9 @@
-const { createLogger, format, transports } = require('winston')
-const { combine, timestamp, label } = format
+const { createLogger, format, transports } = require('winston');
+const { combine, timestamp } = format;
 
 const myFormat = format.printf(({ level, label, message, timestamp }) => {
-    return `${timestamp} [${label || '-'}] ${level}: ${message}`
-})
+    return `${timestamp} [${label || '-'}] ${level}: ${message}`;
+});
 
 const logger = createLogger({
     format: combine(
@@ -12,6 +12,6 @@ const logger = createLogger({
         myFormat
     ),
     transports: [new transports.Console()],
-})
+});
 
-module.exports = logger
+module.exports = logger;

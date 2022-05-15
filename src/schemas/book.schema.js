@@ -1,5 +1,5 @@
-const Ajv = require('ajv')
-const ajv = new Ajv()
+const Ajv = require('ajv');
+const ajv = new Ajv();
 
 const schema = {
     type: 'object',
@@ -13,8 +13,8 @@ const schema = {
     },
     required: ['title'],
     additionalProperties: false,
-}
+};
 
-const booksValidator = ajv.compile(schema)
+const booksValidator = ajv.compile(schema);
 
-module.exports = booksValidator
+module.exports = booksValidator;
