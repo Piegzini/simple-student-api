@@ -7,6 +7,7 @@ const apiLogger = require('./src/middleware/apiLogger')
 
 const bodyParser = require('body-parser')
 const logger = require('./src/middleware/logger')
+const requestId = require('./src/middleware/requestId')
 
 express.urlencoded({ extended: true })
 
@@ -16,8 +17,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+app.use(requestId)
+app.use(apiLogger)
 
-app.use('/books', [apiLogger, books])
+app.use('/books', books)
 app.use('/borrowings', borrowings)
 app.use('/students', students)
 

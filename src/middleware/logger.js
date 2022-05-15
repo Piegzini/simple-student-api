@@ -1,8 +1,8 @@
 const { createLogger, format, transports } = require('winston')
 const { combine, timestamp, label } = format
 
-const myFormat = format.printf(({ level, message, timestamp }) => {
-    return `${timestamp} ${level}: ${message}`
+const myFormat = format.printf(({ level, label, message, timestamp }) => {
+    return `${timestamp} [${label || '-'}] ${level}: ${message}`
 })
 
 const logger = createLogger({
@@ -11,7 +11,6 @@ const logger = createLogger({
         timestamp({ format: 'DD/MM/YYYY HH:mm:ss' }),
         myFormat
     ),
-    // defaultMeta: { service: 'user-service' },
     transports: [new transports.Console()],
 })
 
