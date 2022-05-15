@@ -8,12 +8,62 @@ class DatabaseService {
         this.collection = _collection
     }
 
-    async select(id) {
-        const preQuery = id
-            ? `SELECT * FROM ${this.collection} WHERE id = ? `
-            : `SELECT * FROM ${this.collection}`
+    pagination(_limit, _page) {
+        const limit = parseInt(_limit)
+        const offset = limit * (parseInt(_page) - 1)
+        const preQuery = `SELECT * FROM ${this.collection} LIMIT ? OFFSET ? `
+        return this.baseClient.format(preQuery, [limit, offset])
+    }
 
-        const query = this.baseClient.format(preQuery, id)
+    async pagesInformation(_limit, _page) {
+        const limit = parseInt(_limit)
+        const page = parseInt(_page) - 1
+        let rowsCount = 0
+        const result = {}
+
+        let query = `SELECT COUNT(*) as 'rows' FROM ${this.collection}`
+        query = this.baseClient.format(query)
+
+        try {
+            const connection = await mysql.createConnection(config)
+            const [data] = await connection.query(query)
+            rowsCount = data[0].rows
+            console.log(rowsCount)
+        } catch (e) {
+            throw e
+        }
+
+        if (page - 1 > 0) {
+            result.previous = {
+                page: page - 1,
+                limit,
+            }
+        }
+
+        if (page + 1 < rowsCount / limit) {
+            result.next = {
+                page: page + 1,
+                limit,
+            }
+        }
+
+        return result
+    }
+
+    async select(id, queryParams) {
+        const pagination = queryParams?.page || queryParams?.limit
+
+        let query
+
+        if (pagination) {
+            const { page, limit } = queryParams
+            query = this.pagination(limit, page)
+        } else {
+            query = id
+                ? `SELECT * FROM ${this.collection} WHERE id = ? `
+                : `SELECT * FROM ${this.collection}`
+            query = this.baseClient.format(query, id)
+        }
 
         try {
             const connection = await mysql.createConnection(config)
@@ -23,9 +73,14 @@ class DatabaseService {
                 return new Response(404, message)
             }
 
-            return new Response(200, 'Success', data)
+            const { page, limit } = queryParams
+            const pagesInformation = await this.pagesInformation(limit, page)
+
+            const response = new Response(200, 'Success', data)
+            response.pages = pagesInformation
+
+            return response
         } catch (e) {
-            console.log(e)
             return new Response(500, e.message)
         }
     }

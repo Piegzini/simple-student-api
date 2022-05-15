@@ -7,8 +7,8 @@ class Controller {
         this.validator = _validator
     }
 
-    async get(id) {
-        return await this.dbService.select(id)
+    async get(id, queryParams) {
+        return await this.dbService.select(id, queryParams)
     }
 
     async create(element) {
