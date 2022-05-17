@@ -1,5 +1,5 @@
 const Controller = require('../helpers/Controller');
-const Validator = require('../schemas/borrowing.schema');
+const Validator = require('../patterns/schemas/borrowing.schema');
 
 class Borrowings extends Controller {
     constructor(_collection, _validator) {

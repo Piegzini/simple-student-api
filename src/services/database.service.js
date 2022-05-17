@@ -4,96 +4,85 @@ const Response = require('../helpers/response');
 
 class DatabaseService {
     baseClient = mysql;
-    constructor(_collection) {
+    constructor(_collection, _model) {
         this.collection = _collection;
+        this.model = _model;
     }
 
-    pagination(_limit, _page) {
-        const limit = parseInt(_limit);
-        const offset = limit * (parseInt(_page) - 1);
-        const preQuery = `SELECT * FROM ${this.collection} LIMIT ? OFFSET ? `;
-        return this.baseClient.format(preQuery, [limit, offset]);
-    }
+    async pagesInformation(_page, _limit) {
+        const limit = _limit;
+        const page = _page;
 
-    async pagesInformation(_limit, _page) {
-        const limit = parseInt(_limit);
-        const page = parseInt(_page) - 1;
-        let rowsCount = 0;
-        const result = {};
-
-        let query = `SELECT COUNT(*) as 'rows' FROM ${this.collection}`;
-        query = this.baseClient.format(query);
+        let rowsCount;
 
         try {
-            const connection = await mysql.createConnection(config);
-            const [data] = await connection.query(query);
-            rowsCount = data[0].rows;
+            rowsCount = await this.model.count();
         } catch (e) {
             console.log(e);
         }
 
-        if (page - 1 > 0) {
-            result.previous = {
-                page: page - 1,
-                limit,
-            };
+        let result = {
+            previous: { page: page - 1, limit },
+            next: { page: page + 1, limit },
+        };
+
+        if (page - 1 <= 0) {
+            const { previous, ...rest } = result;
+            result = rest;
         }
 
-        if (page + 1 < rowsCount / limit) {
-            result.next = {
-                page: page + 1,
-                limit,
-            };
+        if (page + 1 >= rowsCount / limit) {
+            const { next, ...rest } = result;
+            result = rest;
         }
 
         return result;
     }
 
-    async select(id, queryParams) {
-        const pagination = queryParams?.page || queryParams?.limit;
-
-        let query;
-
-        if (pagination) {
-            const { page, limit } = queryParams;
-            query = this.pagination(limit, page);
-        } else {
-            query = id
-                ? `SELECT * FROM ${this.collection} WHERE id = ? `
-                : `SELECT * FROM ${this.collection}`;
-            query = this.baseClient.format(query, id);
+    async selectById(id) {
+        try {
+            const data = await this.model.findByPk(id);
+            if (!data) {
+                return new Response(404, 'Not Found');
+            }
+            return new Response(200, 'Success', data);
+        } catch (e) {
+            const message = e.message;
+            return new Response(500, message);
         }
+    }
+
+    async selectAll() {
+        try {
+            const data = await this.model.findAll();
+            return new Response(200, 'Success', data);
+        } catch (e) {
+            const message = e.message;
+            return new Response(500, message);
+        }
+    }
+
+    async selectPaginated(_page, _limit) {
+        const limit = parseInt(_limit);
+        const page = parseInt(_page);
+        const offset = limit * (page - 1);
 
         try {
-            const connection = await mysql.createConnection(config);
-            const [data] = await connection.query(query);
-            if (!data.length) {
-                const message = 'The resource does not exist';
-                return new Response(404, message);
-            }
-
-            const { page, limit } = queryParams;
-            const pagesInformation = await this.pagesInformation(limit, page);
-
+            const data = await this.model.findAll({ limit, offset });
+            const pages = await this.pagesInformation(page, limit);
             const response = new Response(200, 'Success', data);
-            response.pages = pagesInformation;
-
+            response.pages = pages;
             return response;
         } catch (e) {
-            return new Response(500, e.message);
+            const message = e.message;
+            return new Response(500, message);
         }
     }
 
     async insert(element) {
-        const query = this.baseClient.format(
-            `INSERT INTO ${this.collection} SET ? `,
-            [element]
-        );
-
         try {
-            const connection = await this.baseClient.createConnection(config);
-            await connection.query(query);
-
+            const response = await this.model.create({ ...element });
+            console.log(response);
             return new Response(201, 'New record created');
         } catch (e) {
             const message = e.message;
@@ -102,10 +91,7 @@ class DatabaseService {
     }
 
     async update(id, element) {
-        const query = this.baseClient.format(
-            `UPDATE ${this.collection} SET ? WHERE id = ?`,
-            [element, id]
-        );
+        const query = this.baseClient.format(`UPDATE ${this.collection} SET ? WHERE id = ?`, [element, id]);
         try {
             const connection = await this.baseClient.createConnection(config);
             const [dataBaseResponse] = await connection.query(query);
@@ -119,16 +105,14 @@ class DatabaseService {
     }
 
     async delete(id) {
-        const query = this.baseClient.format(
-            `DELETE FROM ${this.collection} WHERE id = ? `,
-            id
-        );
-
         try {
-            const connection = await this.baseClient.createConnection(config);
-            const [{ affectedRows }] = await connection.query(query);
+            const isDeleted = await this.model.destroy({
+                where: {
+                    id: id,
+                },
+            });
 
-            if (!affectedRows) {
+            if (!isDeleted) {
                 const message = 'Resource with this id does not exist';
                 return new Response(404, message);
             }

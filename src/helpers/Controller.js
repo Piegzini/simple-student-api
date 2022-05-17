@@ -2,13 +2,23 @@ const Response = require('./response');
 const DatabaseService = require('../services/database.service');
 
 class Controller {
-    constructor(_collection, _validator) {
-        this.dbService = new DatabaseService(_collection);
+    constructor(_collection, _model, _validator) {
+        this.dbService = new DatabaseService(_collection, _model);
         this.validator = _validator;
     }
 
     async get(id, queryParams) {
-        return await this.dbService.select(id, queryParams);
+        const paginated = queryParams?.page || queryParams?.limit;
+
+        if (id) {
+            return await this.dbService.select(id, queryParams);
+        }
+        if (paginated) {
+            const { page, limit } = queryParams;
+            return await this.dbService.selectPaginated(page, limit);
+        }
+
+        return await this.dbService.selectAll();
     }
 
     async create(element) {
@@ -16,14 +26,14 @@ class Controller {
 
         if (!resultOfValidation) {
             const message = this.validator.errors[0].message;
-            return new Response(401, message);
+            return new Response(400, message);
         }
 
         return await this.dbService.insert(element);
     }
 
     async update(id, values) {
-        const response = await this.dbService.select(id);
+        const response = await this.dbService.selectById(id);
 
         const {
             statusCode,
@@ -43,7 +53,7 @@ class Controller {
 
         if (!resultOfValidation) {
             const message = this.validator.errors[0].message;
-            return new Response(401, message);
+            return new Response(400, message);
         }
 
         return await this.dbService.update(id, updatedElement);

@@ -1,5 +1,5 @@
 const Controller = require('../helpers/Controller');
-const Validator = require('../schemas/student.schema');
+const Validator = require('../patterns/schemas/student.schema');
 
 class Students extends Controller {
     constructor(_collection, _validator) {
