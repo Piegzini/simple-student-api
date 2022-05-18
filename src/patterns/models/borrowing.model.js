@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const db = require('../../../db.config');
 
-const Book = db.define(
-    'book',
+const Borrowing = db.define(
+    'borrowing',
     {
         id: {
             type: DataTypes.INTEGER,
@@ -11,8 +11,14 @@ const Book = db.define(
             unique: true,
             allowNull: false,
         },
-        title: {
-            type: DataTypes.STRING(70),
+        student_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            required: true,
+        },
+
+        book_id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
             required: true,
         },
@@ -20,4 +26,4 @@ const Book = db.define(
     {}
 );
 
-module.exports = Book;
+module.exports = Borrowing;

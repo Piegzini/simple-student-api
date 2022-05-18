@@ -22,6 +22,7 @@ class Controller {
     }
 
     async create(element) {
+        console.log(element);
         const resultOfValidation = this.validator(element);
 
         if (!resultOfValidation) {

@@ -1,3 +1,4 @@
+const { Sequelize } = require('sequelize');
 const dbConfig = {
     host: 'localhost',
     user: 'root',
@@ -5,4 +6,9 @@ const dbConfig = {
     database: 'library',
 };
 
-module.exports = dbConfig;
+const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {
+    host: dbConfig.host,
+    dialect: 'mysql',
+});
+
+module.exports = sequelize;

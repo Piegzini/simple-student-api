@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const db = require('../../../db.config');
 
-const Book = db.define(
-    'book',
+const Student = db.define(
+    'student',
     {
         id: {
             type: DataTypes.INTEGER,
@@ -11,13 +11,23 @@ const Book = db.define(
             unique: true,
             allowNull: false,
         },
-        title: {
+        pesel: {
+            type: DataTypes.STRING(11),
+            allowNull: false,
+            unique: true,
+            len: [11, 11],
+        },
+        name: {
             type: DataTypes.STRING(70),
             allowNull: false,
-            required: true,
+        },
+
+        surname: {
+            type: DataTypes.STRING(70),
+            allowNull: false,
         },
     },
     {}
 );
 
-module.exports = Book;
+module.exports = Student;

@@ -10,8 +10,6 @@ const bodyParser = require('body-parser');
 const logger = require('./src/middleware/logger');
 const requestId = require('./src/middleware/requestId');
 
-express.urlencoded({ extended: true });
-
 const app = express();
 
 app.use(helmet());
@@ -22,8 +20,8 @@ app.use(bodyParser.json());
 app.use(requestId);
 app.use(apiLogger);
 
-app.use('/books', books);
-app.use('/borrowings', borrowings);
-app.use('/students', students);
+app.use('/api/v1/books', books);
+app.use('/api/v1/borrowings', borrowings);
+app.use('/api/v1/students', students);
 
 app.listen(PORT, () => logger.info('Server is up!'));
