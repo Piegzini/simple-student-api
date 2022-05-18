@@ -81,9 +81,9 @@ class DatabaseService {
 
     async insert(element) {
         try {
-            const response = await this.model.create({ ...element });
-            console.log(response);
-            return new Response(201, 'New record created');
+            const { dataValues } = await this.model.create({ ...element });
+
+            return new Response(201, 'New record created', dataValues);
         } catch (e) {
             const message = e.message;
             return new Response(500, message);

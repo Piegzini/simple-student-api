@@ -1,38 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const borrowingsController = require('../controlers/borrowings.controller');
+const studentsController = require('../../controlers/api/students.controller');
+const passport = require('passport');
 
 router
-    .get('/:id?', async (req, res) => {
+    .get('/:id?', passport.authenticate('jwt', { session: false }), async (req, res) => {
         const { id } = req.params;
         const queryParams = { ...req.query };
-
-        const responseInformation = await borrowingsController.get(
-            id,
-            queryParams
-        );
+        const responseInformation = await studentsController.get(id, queryParams);
         res.status(responseInformation.statusCode).send(responseInformation);
     })
     .post('/', async (req, res) => {
-        const borrowing = { ...req.body };
-        const responseInformation = await borrowingsController.create(
-            borrowing
-        );
+        const student = { ...req.body };
+        const responseInformation = await studentsController.create(student);
         res.status(responseInformation.statusCode).send(responseInformation);
     })
 
     .put('/:id', async (req, res) => {
         const { id } = req.params;
-        const borrowing = { ...req.body };
-        const responseInformation = await borrowingsController.update(
-            id,
-            borrowing
-        );
+        const student = { ...req.body };
+        const responseInformation = await studentsController.update(id, student);
         res.status(responseInformation.statusCode).send(responseInformation);
     })
     .delete('/:id', async (req, res) => {
         const { id } = req.params;
-        const responseInformation = await borrowingsController.delete(id);
+        const responseInformation = await studentsController.delete(id);
         res.status(responseInformation.statusCode).send(responseInformation);
     });
 

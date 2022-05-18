@@ -19,6 +19,8 @@
     "helmet": "^5.0.2",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
+    "passport": "^0.5.3",
+    "passport-jwt": "^4.0.0",
     "prettier": "^2.6.2",
     "sequelize": "^6.19.0",
     "uuid": "^8.3.2",
