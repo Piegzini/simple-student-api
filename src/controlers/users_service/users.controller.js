@@ -19,11 +19,16 @@ class UsersController extends Controller {
         if (result.statusCode === 201) {
             const { token, expires } = utils.issueJWT(result.data);
             result.data = { id: result.data.id };
-            result.token = token;
-            result.expires = expires;
-            const mailer = new MailerService();
-            const dupa = await mailer.send(email, token, expires);
-            console.log(dupa);
+            //sending mail
+            const postman = new MailerService();
+            const statusOfSendingMail = await postman.send(email, token, expires);
+
+            if (statusOfSendingMail !== 250) {
+                result.statusCode = statusOfSendingMail;
+                result.message = 'Something is wrong with your email';
+            }
+
+            result.message = 'Token has been sent successfully to your email';
             return result;
         }
 
@@ -46,9 +51,16 @@ class UsersController extends Controller {
         }
 
         const { token, expires } = utils.issueJWT(user);
+
         const response = new Response(200, 'Success');
-        response.token = token;
-        response.expires = expires;
+
+        const postman = new MailerService();
+        const statusOfSendingMail = await postman.send(user.email, token, expires);
+
+        if (statusOfSendingMail !== 250) {
+            response.statusCode = statusOfSendingMail;
+            response.message = 'Something is wrong with your email';
+        }
 
         return response;
     }

@@ -11,8 +11,8 @@ class MailerService {
         this.transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'simple.api.07@gmail.com',
-                pass: 'ayGfeHB9n',
+                user: process.env.EMAIL_NAME,
+                pass: process.env.EMAIL_PASSWORD,
             },
         });
     }
@@ -21,12 +21,12 @@ class MailerService {
         return {
             from: 'Simple Api <simple.api.07@gmail.com>',
             to: `${email}`,
-            subject: 'Welcome to Simple Api',
-            html: `
+            subject: 'Your Simple API Token',
+            html: ` 
             <html lang="en">
                 <body>
                     <h3>This is your api token:  </h3>
-                    <h5>${token}</h5>
+                    <p>${token}</p>
                     <p>It expires: ${expires}</p>
                     <p>Have fun!</p>
                 </body>
@@ -36,7 +36,8 @@ class MailerService {
 
     async send(_email, _token, _expires) {
         const options = this.getOptions(_email, _token, _expires);
-        return await this.transporter.sendMail(options);
+        const { response } = await this.transporter.sendMail(options);
+        return parseInt(response.split(' ')[0]);
     }
 }
 
