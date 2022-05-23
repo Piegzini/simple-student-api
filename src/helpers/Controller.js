@@ -1,4 +1,4 @@
-const Response = require('./response');
+const { Response } = require('./utils');
 const DatabaseService = require('../services/database.service');
 
 class Controller {
