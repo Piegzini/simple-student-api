@@ -3,7 +3,8 @@ const utils = require('../../helpers/utils');
 const DatabaseService = require('../../services/database.service');
 const router = express.Router();
 const User = require('../../patterns/models/users.model');
-const Response = require('../../helpers/response');
+const { Response } = require('../../helpers/utils');
+
 router
     .post('/register', async (req, res) => {
         const { salt, hash } = utils.generatePassword(req.body.password);
@@ -30,9 +31,7 @@ router
     })
     .post('/login', async (req, res) => {
         const user = await User.findOne({
-            where: {
-                username: req.body.username,
-            },
+            where: { username: req.body.username },
         });
 
         if (!user) {
@@ -41,6 +40,7 @@ router
         }
 
         const isValid = utils.validPassword(req.body.password, user);
+
         if (isValid) {
             const { token, expires } = utils.issueJWT(user);
             const response = new Response(200, 'Success');

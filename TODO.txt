@@ -1,3 +1,0 @@
-- validation of schemas service
-- books, boorowings and others class
-- change functions to class of controlers

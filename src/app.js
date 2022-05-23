@@ -1,19 +1,20 @@
 const express = require('express');
 const PORT = 3000 || process.env.PORT;
-const books = require('./src/routes/api/books.routes');
-const borrowings = require('./src/routes/api/borrowings.routes');
-const students = require('./src/routes/api/students.routes');
-const users = require('./src/routes/users_service/users.routes');
+const books = require('./routes/api/books.routes');
+const borrowings = require('./routes/api/borrowings.routes');
+const students = require('./routes/api/students.routes');
+const users = require('./routes/users_service/users.routes');
 const passport = require('passport');
+require('dotenv').config();
 
-const apiLogger = require('./src/middleware/apiLogger');
+const apiLogger = require('./middleware/apiLogger');
 const helmet = require('helmet');
 
 const bodyParser = require('body-parser');
-const logger = require('./src/middleware/logger');
-const requestId = require('./src/middleware/requestId');
+const logger = require('./middleware/logger');
+const requestId = require('./middleware/requestId');
 
-require('./src/middleware/passport/config')(passport);
+require('./middleware/passport/config')(passport);
 
 const app = express();
 

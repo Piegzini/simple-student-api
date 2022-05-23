@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-const config = require('../../db.config');
+const config = require('../db');
 const { Response } = require('../helpers/utils');
 
 class DatabaseService {
