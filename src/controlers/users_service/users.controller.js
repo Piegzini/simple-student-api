@@ -3,6 +3,7 @@ const User = require('../../patterns/models/user.model');
 const Validator = require('../../patterns/schemas/student.schema');
 const utils = require('../../helpers/utils');
 const { Response } = require('../../helpers/utils');
+const MailerService = require('../../services/mailer.service');
 
 class UsersController extends Controller {
     constructor(_collection, _model, _validator) {
@@ -18,8 +19,16 @@ class UsersController extends Controller {
         if (result.statusCode === 201) {
             const { token, expires } = utils.issueJWT(result.data);
             result.data = { id: result.data.id };
-            result.token = token;
-            result.expires = expires;
+            //sending mail
+            const postman = new MailerService();
+            const statusOfSendingMail = await postman.send(email, token, expires);
+
+            if (statusOfSendingMail !== 250) {
+                result.statusCode = statusOfSendingMail;
+                result.message = 'Something is wrong with your email';
+            }
+
+            result.message = 'Token has been sent successfully to your email';
             return result;
         }
 
@@ -42,9 +51,16 @@ class UsersController extends Controller {
         }
 
         const { token, expires } = utils.issueJWT(user);
+
         const response = new Response(200, 'Success');
-        response.token = token;
-        response.expires = expires;
+
+        const postman = new MailerService();
+        const statusOfSendingMail = await postman.send(user.email, token, expires);
+
+        if (statusOfSendingMail !== 250) {
+            response.statusCode = statusOfSendingMail;
+            response.message = 'Something is wrong with your email';
+        }
 
         return response;
     }
