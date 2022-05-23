@@ -3,6 +3,7 @@ const User = require('../../patterns/models/user.model');
 const Validator = require('../../patterns/schemas/student.schema');
 const utils = require('../../helpers/utils');
 const { Response } = require('../../helpers/utils');
+const MailerService = require('../../services/mailer.service');
 
 class UsersController extends Controller {
     constructor(_collection, _model, _validator) {
@@ -20,6 +21,9 @@ class UsersController extends Controller {
             result.data = { id: result.data.id };
             result.token = token;
             result.expires = expires;
+            const mailer = new MailerService();
+            const dupa = await mailer.send(email, token, expires);
+            console.log(dupa);
             return result;
         }
 
