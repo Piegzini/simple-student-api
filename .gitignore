@@ -1,4 +1,7 @@
 /node_modules
 /src/middleware/passport/pub_key.pem
 /src/middleware/passport/priv_key.pem
-/.idea
+.idea
+
+
+
