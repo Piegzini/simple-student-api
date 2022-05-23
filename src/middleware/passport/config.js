@@ -2,7 +2,7 @@ const fs = require('fs');
 const { join } = require('path');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const User = require('../../patterns/models/users.model');
+const User = require('../../patterns/models/user.model');
 
 const pub_key = fs.readFileSync(join(__dirname, '/pub_key.pem'));
 

@@ -1,6 +1,5 @@
 const Controller = require('../../helpers/Controller');
 const Student = require('../../patterns/models/student.model');
-
 const Validator = require('../../patterns/schemas/student.schema');
 
 class Students extends Controller {
