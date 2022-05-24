@@ -26,7 +26,7 @@ By logging in to the application and entering our email, we receive a JWT token 
 
 ## Note !
 
-* In Official version on https://pianoblocksapp.com/ you can find Donation page, but I deleted it here
+* In Official version on: will be soon
 * Please report every issue and bug
 
 ## Documentation

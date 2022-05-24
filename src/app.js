@@ -1,10 +1,11 @@
 const express = require('express');
-const PORT = 3000 || process.env.PORT;
+const PORT = 4000 || process.env.PORT;
 const books = require('./routes/api/books.routes');
 const borrowings = require('./routes/api/borrowings.routes');
 const students = require('./routes/api/students.routes');
 const users = require('./routes/users_service/users.routes');
 const passport = require('passport');
+const cors = require('cors')
 require('dotenv').config();
 
 const apiLogger = require('./middleware/apiLogger');
@@ -18,6 +19,7 @@ require('./middleware/passport/config')(passport);
 
 const app = express();
 
+app.use(cors()) 
 app.use(passport.initialize());
 app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: false }));

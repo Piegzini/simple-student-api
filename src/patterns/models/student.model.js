@@ -30,4 +30,8 @@ const Student = db.define(
     {}
 );
 
+// Student.sync()
+//     .then((info) => console.log(info))
+//     .catch((err) => console.log(err));
+
 module.exports = Student;

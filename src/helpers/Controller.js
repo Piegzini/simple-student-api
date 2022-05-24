@@ -11,7 +11,7 @@ class Controller {
         const paginated = queryParams?.page || queryParams?.limit;
 
         if (id) {
-            return await this.dbService.select(id, queryParams);
+            return await this.dbService.selectById(id, queryParams);
         }
         if (paginated) {
             const { page, limit } = queryParams;
