@@ -8,11 +8,11 @@ const users = require('./routes/users_service/users.routes');
 const passport = require('passport');
 const cors = require('cors');
 
-const apiLogger = require('./middleware/apiLogger');
+// const apiLogger = require('./middleware/apiLogger');
 const helmet = require('helmet');
 
 const bodyParser = require('body-parser');
-const logger = require('./middleware/logger');
+// const logger = require('./middleware/logger');
 const requestId = require('./middleware/requestId');
 const path = require('path');
 
@@ -41,4 +41,8 @@ app.use('/api/v1/books', books);
 app.use('/api/v1/borrowings', borrowings);
 app.use('/api/v1/students', students);
 
-app.listen(PORT, () => logger.info('Server is up!'));
+app.set('port', PORT);
+
+app.listen(app.get('port'), () => {
+    console.log(`Serwer is running on ${PORT} port`);
+});
