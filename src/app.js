@@ -29,11 +29,10 @@ app.use(passport.initialize());
 
 app.use(requestId);
 // app.use(apiLogger);
-
-app.use(express.static(path.resolve(__dirname, 'public/index.html')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('/', async (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'public/index.html'));
+    res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 app.use('/service/', users);
