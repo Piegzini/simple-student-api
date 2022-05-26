@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const booksController = require('../../controlers/api/books.controller');
+const passport = require('passport');
 router
+    .use(passport.authenticate('jwt', { session: false }))
     .get('/:id?', async (req, res) => {
         const { id } = req.params;
         const queryParams = { ...req.query };

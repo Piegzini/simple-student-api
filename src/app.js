@@ -1,5 +1,4 @@
 const express = require('express');
-const PORT = process.env.PORT || 4000;
 const books = require('./routes/api/books.routes');
 const borrowings = require('./routes/api/borrowings.routes');
 const students = require('./routes/api/students.routes');
@@ -35,13 +34,11 @@ app.get('/', async (req, res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+const apiUrl = '/api/v1/';
 app.use('/service/', users);
-app.use('/api/v1/books', books);
-app.use('/api/v1/borrowings', borrowings);
-app.use('/api/v1/students', students);
 
-app.set('port', PORT);
+app.use(`${apiUrl}books`, books);
+app.use(`${apiUrl}borrowings`, borrowings);
+app.use(`${apiUrl}students`, students);
 
-app.listen(app.get('port'), () => {
-    console.log(`Serwer is running on ${PORT} port`);
-});
+module.exports = app;

@@ -4,7 +4,8 @@ const studentsController = require('../../controlers/api/students.controller');
 const passport = require('passport');
 
 router
-    .get('/:id?', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    .use(passport.authenticate('jwt', { session: false }))
+    .get('/:id?', async (req, res) => {
         const { id } = req.params;
         const queryParams = { ...req.query };
         const responseInformation = await studentsController.get(id, queryParams);
