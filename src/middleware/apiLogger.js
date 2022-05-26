@@ -3,11 +3,7 @@ const Logger = require('./Logger');
 const apiLogger = (req, res, next) => {
     try {
         res.on('finish', async () => {
-            const ipAddr =
-                req.headers['x-forwarded-for'] ||
-                req.connection.remoteAddress ||
-                req.socket.remoteAddress ||
-                '-';
+            const ipAddr = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || '-';
             const user = req['remote-user'] || '-';
             const http_method = req.method;
             const url = req.baseUrl;

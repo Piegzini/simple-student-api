@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app.js",
+    "start": "node src/middleware/passport/createKeys.js && node src/app.js",
     "serve": "nodemon src/app.js --quiet",
     "db": "docker start demoBase"
   },
