@@ -1,5 +1,5 @@
 const express = require('express');
-const PORT = 4000 || process.env.PORT;
+const PORT = process.env.PORT || 4000;
 const books = require('./routes/api/books.routes');
 const borrowings = require('./routes/api/borrowings.routes');
 const students = require('./routes/api/students.routes');
@@ -14,6 +14,7 @@ const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const logger = require('./middleware/logger');
 const requestId = require('./middleware/requestId');
+const path = require('path');
 
 require('./middleware/passport/config')(passport);
 
@@ -28,6 +29,10 @@ app.use(passport.initialize());
 
 app.use(requestId);
 // app.use(apiLogger);
+app.get('/', async (req, res) => {
+    console.log('hej');
+    res.sendFile(path.resolve('public/index.html'));
+});
 
 app.use(express.static('public'));
 
