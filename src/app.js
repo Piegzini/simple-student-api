@@ -4,9 +4,9 @@ const books = require('./routes/api/books.routes');
 const borrowings = require('./routes/api/borrowings.routes');
 const students = require('./routes/api/students.routes');
 const users = require('./routes/users_service/users.routes');
+
 const passport = require('passport');
-const cors = require('cors')
-require('dotenv').config();
+const cors = require('cors');
 
 const apiLogger = require('./middleware/apiLogger');
 const helmet = require('helmet');
@@ -19,15 +19,17 @@ require('./middleware/passport/config')(passport);
 
 const app = express();
 
-app.use(cors()) 
-app.use(passport.initialize());
-app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-// parse application/json
 app.use(bodyParser.json());
+
+app.use(cors());
+app.use(helmet());
+app.use(passport.initialize());
+
 app.use(requestId);
-app.use(apiLogger);
+// app.use(apiLogger);
+
+app.use(express.static('public'));
 
 app.use('/service/', users);
 app.use('/api/v1/books', books);
