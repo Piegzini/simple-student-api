@@ -29,12 +29,12 @@ app.use(passport.initialize());
 
 app.use(requestId);
 // app.use(apiLogger);
-app.get('/', async (req, res) => {
-    console.log('hej');
-    res.sendFile(path.resolve('public/index.html'));
-});
 
-app.use(express.static('public'));
+app.use(express.static(path.resolve(__dirname, 'public/index.html')));
+
+app.get('/', async (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public/index.html'));
+});
 
 app.use('/service/', users);
 app.use('/api/v1/books', books);
