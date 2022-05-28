@@ -1,0 +1,32 @@
+doctype html
+html(lang="PL-pl")
+    head
+        style(type="text/css").
+            body {
+                background-color: #1A202C;
+                color: rgba(255, 255, 255, 0.92);
+                font-family: "Helvetica",sans-serif;
+                text-align: center;
+            }
+            h1{
+                margin-top: 15px;
+                padding: 10px;
+            }
+            #TokenContainer{
+                background-color: #00939a;
+                padding: 20px;
+                width: 60%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 10px auto;
+                border-radius: 5px;
+                word-break: break-all;
+            }
+    body
+        h1 Welcome to Simple Student API
+        p There is your token!
+        div#TokenContainer #{ token }
+        p It expires for #{ expires }!
+        h3 Have a fun!
+

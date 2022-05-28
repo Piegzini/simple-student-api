@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const pug = require('pug');
+const { join } = require('path');
 require('dotenv').config();
 
 class MailerService {
@@ -22,15 +24,10 @@ class MailerService {
             from: 'Simple Api <simple.api.07@gmail.com>',
             to: `${email}`,
             subject: 'Your Simple API Token',
-            html: ` 
-            <html lang="en">
-                <body>
-                    <h3>This is your api token:  </h3>
-                    <p>${token}</p>
-                    <p>It expires: ${expires}</p>
-                    <p>Have fun!</p>
-                </body>
-            </html>`,
+            html: pug.renderFile(join(__dirname, 'emails/welcome.pug'), {
+                token,
+                expires,
+            }),
         };
     }
 
