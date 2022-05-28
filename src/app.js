@@ -14,6 +14,7 @@ const bodyParser = require('body-parser');
 // const logger = require('./middleware/logger');
 const requestId = require('./middleware/requestId');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 
 require('./middleware/passport/config')(passport);
 
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cors());
+app.use(cookieParser());
 app.use(helmet());
 app.use(passport.initialize());
 

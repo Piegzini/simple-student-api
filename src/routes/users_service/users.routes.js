@@ -15,8 +15,13 @@ router
     })
     .post('/login', async (req, res) => {
         const data = { username: req.body.username, password: req.body.password };
+        const isFirstLogin = !req.cookies?.['isFirstLogin'];
 
-        const response = await usersController.login(data);
+        if (isFirstLogin) {
+            res.cookie('isFirstLogin', 'false');
+        }
+
+        const response = await usersController.login(data, isFirstLogin);
         res.status(response.statusCode).send(response);
     });
 

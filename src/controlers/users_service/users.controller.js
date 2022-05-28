@@ -17,25 +17,14 @@ class UsersController extends Controller {
         const result = await this.dbService.insert(user);
 
         if (result.statusCode === 201) {
-            const { token, expires } = utils.issueJWT(result.data);
-            result.data = { id: result.data.id };
-            //sending mail
-            const postman = new MailerService();
-            const statusOfSendingMail = await postman.send(email, token, expires);
-
-            if (statusOfSendingMail !== 250) {
-                result.statusCode = statusOfSendingMail;
-                result.message = 'Something is wrong with your email';
-            }
-
-            result.message = 'Token has been sent successfully to your email';
+            result.message = 'Account has been successfully registered';
             return result;
         }
 
         return result;
     }
 
-    async login({ username, password }) {
+    async login({ username, password }, isFirstLogin) {
         const user = await this.dbService.model.findOne({
             where: { username },
         });
@@ -55,7 +44,7 @@ class UsersController extends Controller {
         const response = new Response(200, 'Success');
 
         const postman = new MailerService();
-        const statusOfSendingMail = await postman.send(user.email, token, expires);
+        const statusOfSendingMail = await postman.send(user.email, token, expires, isFirstLogin);
 
         if (statusOfSendingMail !== 250) {
             response.statusCode = statusOfSendingMail;

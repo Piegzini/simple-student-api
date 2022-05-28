@@ -19,7 +19,8 @@ class MailerService {
         });
     }
 
-    getOptions(email, token, expires) {
+    getOptions(email, token, expires, isFirstLogin) {
+        const headerText = isFirstLogin ? 'Welcome to Simple Student API' : 'Get your new token';
         return {
             from: 'Simple Api <simple.api.07@gmail.com>',
             to: `${email}`,
@@ -27,6 +28,7 @@ class MailerService {
             html: pug.renderFile(join(__dirname, 'emails/welcome.pug'), {
                 token,
                 expires,
+                headerText,
             }),
         };
     }
