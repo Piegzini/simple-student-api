@@ -43,7 +43,7 @@ To get access token to API you need to take few steps.
 </ol>
 
 ### Data
-We have three data bases:
+We have three databases:
 <ul>
     <li>Books</li>
     <li>Borrowings</li>
