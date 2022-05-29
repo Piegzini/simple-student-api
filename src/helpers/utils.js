@@ -18,7 +18,7 @@ const validPassword = (password, { hash, salt }) => {
 
 const issueJWT = (user) => {
     const id = user.id;
-    const expiresIn = '2d';
+    const expiresIn = '1 day';
     const payload = {
         sub: id,
         iat: Date.now(),

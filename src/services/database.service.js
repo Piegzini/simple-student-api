@@ -89,16 +89,12 @@ class DatabaseService {
     }
 
     async update(id, element) {
-        const query = this.baseClient.format(`UPDATE ${this.collection} SET ? WHERE id = ?`, [element, id]);
         try {
-            const connection = await this.baseClient.createConnection(config);
-            const [dataBaseResponse] = await connection.query(query);
-            const { affectedRows, info } = dataBaseResponse;
-
-            return new Response(affectedRows ? 200 : 404, info);
+            await element.save();
+            return new Response(200, 'Record updated');
         } catch (e) {
             const message = e.message;
-            return new Response(400, message);
+            return new Response(500, message);
         }
     }
 

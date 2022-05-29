@@ -11,7 +11,7 @@ class Controller {
         const paginated = queryParams?.page || queryParams?.limit;
 
         if (id) {
-            return await this.dbService.selectById(id, queryParams);
+            return await this.dbService.selectById(id);
         }
         if (paginated) {
             const { page, limit } = queryParams;
@@ -22,7 +22,6 @@ class Controller {
     }
 
     async create(element) {
-        console.log(element);
         const resultOfValidation = this.validator(element);
 
         if (!resultOfValidation) {
@@ -35,29 +34,14 @@ class Controller {
 
     async update(id, values) {
         const response = await this.dbService.selectById(id);
-
-        const {
-            statusCode,
-            data: [currentElementValues],
-        } = response;
+        const { statusCode, data: element } = response;
 
         if (statusCode !== 200) {
             return response;
         }
 
-        const updatedElement = {
-            ...currentElementValues,
-            ...values,
-        };
-
-        const resultOfValidation = this.validator(updatedElement);
-
-        if (!resultOfValidation) {
-            const message = this.validator.errors[0].message;
-            return new Response(400, message);
-        }
-
-        return await this.dbService.update(id, updatedElement);
+        element.set({ ...values });
+        return await this.dbService.update(id, element);
     }
 
     async delete(id) {
