@@ -16,7 +16,7 @@ class UsersController extends Controller {
 
         const result = await this.dbService.insert(user);
 
-        if (result.statusCode === 201) {
+        if (result.status === 201) {
             result.message = 'Account has been successfully registered';
             return result;
         }
@@ -25,30 +25,30 @@ class UsersController extends Controller {
     }
 
     async login({ username, password }, isFirstLogin) {
+        const response = new Response();
         const user = await this.dbService.model.findOne({
             where: { username },
         });
 
         if (!user) {
-            return new Response(401, "User with this name doesn't exist");
+            response.setError(401, "User with this name doesn't exist");
+            return response;
         }
 
         const isValidPassword = utils.validPassword(password, user);
 
         if (!isValidPassword) {
-            return new Response(401, 'Wrong password');
+            response.setError(401, 'Wrong password');
+            return response;
         }
 
         const { token, expires } = utils.issueJWT(user);
-
-        const response = new Response(200, 'Success');
 
         const postman = new MailerService();
         const statusOfSendingMail = await postman.send(user.email, token, expires, isFirstLogin);
 
         if (statusOfSendingMail !== 250) {
-            response.statusCode = statusOfSendingMail;
-            response.message = 'Something is wrong with your email';
+            response.setError(statusOfSendingMail, 'Something is wrong with your email');
         }
 
         return response;

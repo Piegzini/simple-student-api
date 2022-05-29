@@ -8,25 +8,25 @@ router
     .get('/:id?', async (req, res) => {
         const { id } = req.params;
         const queryParams = { ...req.query };
-        const responseInformation = await studentsController.get(id, queryParams);
-        res.status(responseInformation.statusCode).send(responseInformation);
+        const response = await studentsController.get(id, queryParams);
+        res.status(response.status).send(response);
     })
     .post('/', async (req, res) => {
         const student = { ...req.body };
-        const responseInformation = await studentsController.create(student);
-        res.status(responseInformation.statusCode).send(responseInformation);
+        const response = await studentsController.create(student);
+        res.status(response.status).send(response);
     })
 
     .put('/:id', async (req, res) => {
         const { id } = req.params;
         const student = { ...req.body };
-        const responseInformation = await studentsController.update(id, student);
-        res.status(responseInformation.statusCode).send(responseInformation);
+        const response = await studentsController.update(id, student);
+        res.status(response.status).send(response);
     })
     .delete('/:id', async (req, res) => {
         const { id } = req.params;
-        const responseInformation = await studentsController.delete(id);
-        res.status(responseInformation.statusCode).send(responseInformation);
+        const response = await studentsController.delete(id);
+        res.status(response.status).send(response);
     });
 
 module.exports = router;

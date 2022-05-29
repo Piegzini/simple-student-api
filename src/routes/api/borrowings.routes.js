@@ -9,25 +9,25 @@ router
         const { id } = req.params;
         const queryParams = { ...req.query };
 
-        const responseInformation = await borrowingsController.get(id, queryParams);
-        res.status(responseInformation.statusCode).send(responseInformation);
+        const response = await borrowingsController.get(id, queryParams);
+        res.status(response.status).send(response);
     })
     .post('/', async (req, res) => {
         const borrowing = { ...req.body };
-        const responseInformation = await borrowingsController.create(borrowing);
-        res.status(responseInformation.statusCode).send(responseInformation);
+        const response = await borrowingsController.create(borrowing);
+        res.status(response.status).send(response);
     })
 
     .put('/:id', async (req, res) => {
         const { id } = req.params;
         const borrowing = { ...req.body };
-        const responseInformation = await borrowingsController.update(id, borrowing);
-        res.status(responseInformation.statusCode).send(responseInformation);
+        const response = await borrowingsController.update(id, borrowing);
+        res.status(response.status).send(response);
     })
     .delete('/:id', async (req, res) => {
         const { id } = req.params;
-        const responseInformation = await borrowingsController.delete(id);
-        res.status(responseInformation.statusCode).send(responseInformation);
+        const response = await borrowingsController.delete(id);
+        res.status(response.status).send(response);
     });
 
 module.exports = router;

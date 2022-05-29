@@ -38,29 +38,23 @@ class DatabaseService {
     }
 
     async selectById(id) {
+        const response = new Response();
         try {
             const data = await this.model.findByPk(id);
             if (!data) {
-                return new Response(404, 'Not Found');
+                response.setError(404, 'Not Found');
+                return response;
             }
-            return new Response(200, 'Success', data);
-        } catch (e) {
-            const message = e.message;
-            return new Response(500, message);
-        }
-    }
-
-    async selectAll() {
-        try {
-            const data = await this.selectPaginated(1, 20);
-            return new Response(200, 'Success', data);
-        } catch (e) {
-            const message = e.message;
-            return new Response(500, message);
+            return response;
+        } catch ({ message }) {
+            response.setError(500, message);
+            return response;
         }
     }
 
     async selectPaginated(_page, _limit) {
+        const response = new Response();
+
         const limit = parseInt(_limit);
         const page = parseInt(_page);
         const offset = limit * (page - 1);
@@ -68,37 +62,41 @@ class DatabaseService {
         try {
             const data = await this.model.findAll({ limit, offset });
             const pages = await this.pagesInformation(page, limit);
-            const response = new Response(200, 'Success', data);
+            response.setData(data);
             response.pages = pages;
-            return response;
         } catch (e) {
-            const message = e.message;
-            return new Response(500, message);
+            response.setError(500, e.message);
         }
+        return response;
     }
 
     async insert(element) {
+        const response = new Response();
+        console.log(element);
         try {
             const { dataValues } = await this.model.create({ ...element });
-
-            return new Response(201, 'New record created', dataValues);
+            response.setData(dataValues, 201);
         } catch (e) {
-            const message = e.message;
-            return new Response(500, message);
+            console.log(e);
+            response.setError(500, e.message);
         }
+
+        return response;
     }
 
     async update(id, element) {
+        const response = new Response();
         try {
             await element.save();
-            return new Response(200, 'Record updated');
         } catch (e) {
-            const message = e.message;
-            return new Response(500, message);
+            response.setError(500, e.message);
         }
+
+        return response;
     }
 
     async delete(id) {
+        const response = new Response();
         try {
             const isDeleted = await this.model.destroy({
                 where: {
@@ -108,14 +106,13 @@ class DatabaseService {
 
             if (!isDeleted) {
                 const message = 'Resource with this id does not exist';
-                return new Response(404, message);
+                response.setError(404, message);
             }
-
-            return new Response(200, 'Success');
         } catch (e) {
-            const message = e.message;
-            return new Response(400, message);
+            response.setError(500, e.message);
         }
+
+        return response;
     }
 }
 

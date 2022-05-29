@@ -11,7 +11,7 @@ router
         };
         const response = await usersController.register(user);
 
-        res.status(response.statusCode).send(response);
+        res.status(response.status).send(response);
     })
     .post('/login', async (req, res) => {
         const data = { username: req.body.username, password: req.body.password };
@@ -22,7 +22,7 @@ router
         }
 
         const response = await usersController.login(data, isFirstLogin);
-        res.status(response.statusCode).send(response);
+        res.status(response.status).send(response);
     });
 
 module.exports = router;

@@ -33,10 +33,20 @@ const issueJWT = (user) => {
 };
 
 class Response {
-    constructor(_statusCode = 200, _message = 'Success', _data) {
-        this.statusCode = _statusCode;
+    constructor() {
+        this.status = 200;
+        this.success = true;
+    }
+
+    setError(_status, _message) {
+        this.success = false;
+        this.status = _status;
         this.message = _message;
+    }
+
+    setData(_data, _status) {
         this.data = _data;
+        this.status = _status ? _status : this.status;
     }
 }
 

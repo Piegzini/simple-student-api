@@ -18,15 +18,16 @@ class Controller {
             return await this.dbService.selectPaginated(page, limit);
         }
 
-        return await this.dbService.selectAll();
+        return await this.dbService.selectPaginated(1, 20);
     }
 
     async create(element) {
         const resultOfValidation = this.validator(element);
 
         if (!resultOfValidation) {
+            const response = new Response();
             const message = this.validator.errors[0].message;
-            return new Response(400, message);
+            response.setError(400, message);
         }
 
         return await this.dbService.insert(element);
