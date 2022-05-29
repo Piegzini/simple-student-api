@@ -31,7 +31,32 @@ By logging in to the application and entering our email, we receive a JWT token 
 
 ## Documentation
 
-### Will be soon added!
+### How to get access token?
+
+To get access token to API you need to take few steps.
+
+<ol> 
+    <li>Go to the site: https://simple-student-api.herokuapp.com,</li>
+    <li>Register your account with username, password and email,</li>
+    <li>Login to your account, and then access token will be sent to your email.</li>
+    <li>Now you can use the service</li>
+</ol>
+
+### Data
+We have three data bases:
+<ul>
+    <li>Books</li>
+    <li>Borrowings</li>
+    <li>Students</li>
+</ul>
+
+### Endpoints
+##### Getters 
+/books - send users data. Default it use pagination with 20 elements limit.
+
+/books/:id - send data information about user with this id. 
+
+
 
 
 
