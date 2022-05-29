@@ -52,7 +52,7 @@ class DatabaseService {
 
     async selectAll() {
         try {
-            const data = await this.model.findAll();
+            const data = await this.selectPaginated(1, 20);
             return new Response(200, 'Success', data);
         } catch (e) {
             const message = e.message;
