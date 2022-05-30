@@ -45,6 +45,7 @@ class DatabaseService {
                 response.setError(404, 'Not Found');
                 return response;
             }
+            response.setData(data);
             return response;
         } catch ({ message }) {
             response.setError(500, message);

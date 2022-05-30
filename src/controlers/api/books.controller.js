@@ -1,4 +1,4 @@
-const Controller = require('../../helpers/Controller');
+const Controller = require('../Controller');
 const Book = require('../../patterns/models/book.model');
 const validator = require('../../patterns/schemas/book.schema');
 

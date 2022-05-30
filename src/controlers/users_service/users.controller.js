@@ -1,4 +1,4 @@
-const Controller = require('../../helpers/Controller');
+const Controller = require('../Controller');
 const User = require('../../patterns/models/user.model');
 const Validator = require('../../patterns/schemas/student.schema');
 const utils = require('../../helpers/utils');

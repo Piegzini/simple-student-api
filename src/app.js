@@ -16,7 +16,7 @@ const requestId = require('./middleware/requestId');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 
-require('./middleware/passport/config')(passport);
+require(path.join(__dirname, './middleware/passport/config'))(passport);
 
 const app = express();
 
@@ -30,11 +30,6 @@ app.use(passport.initialize());
 
 app.use(requestId);
 // app.use(apiLogger);
-app.use(express.static(path.join(__dirname, '../public')));
-
-app.get('/', async (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
-});
 
 const apiUrl = '/api/v1/';
 app.use('/service/', users);
